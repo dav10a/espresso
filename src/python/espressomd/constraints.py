@@ -194,6 +194,20 @@ class HomogeneousMagneticField(Constraint):
     """
 
     _so_name = "Constraints::HomogeneousMagneticField"
+@script_interface_register
+class AlternatingMagneticField(Constraint):
+
+    """
+    Attributes
+    ----------
+    H0 : (3,) array_like of :obj:`float`
+        Magnetic field amplitude.
+    omega : :obj:`float`
+        Frequency.
+    """
+
+    _so_name = "Constraints::AlternatingMagneticField"
+
 
 
 class _Interpolated(Constraint):

@@ -569,6 +569,7 @@ These are fields that are constant in space or simple linear functions
 of the position.  The available fields are:
 
 * :class:`espressomd.constraints.HomogeneousMagneticField`
+* :class:`espressomd.constraints.AlternatingMagneticField`
 * :class:`espressomd.constraints.ElectricPlaneWave`
 * :class:`espressomd.constraints.LinearElectricPotential`
 * :class:`espressomd.constraints.HomogeneousFlowField`

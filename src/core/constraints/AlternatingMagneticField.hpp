@@ -29,14 +29,13 @@ namespace Constraints {
 
 class AlternatingMagneticField : public Constraint {
 public:
-  AlternatingMagneticField() : m_field({1., 0., 0.}) {}
+  AlternatingMagneticField() : m_amplitude({1., 0., 0.}) {}
 
-  void set_H0(Utils::Vector3d const &H0) { m_field = H0; }
+  void set_H0(Utils::Vector3d const &H0) { m_amplitude = H0; }
   void set_omega(double const &w) { frequency = w; }
 
 
-
-  Utils::Vector3d const &H0() const { return m_field; }
+  Utils::Vector3d const &H0() const { return m_amplitude; }
   double const &omega() const { return frequency; }
 
   void add_energy(const Particle &p, const Utils::Vector3d &, double,
@@ -48,7 +47,7 @@ public:
   bool fits_in_box(Utils::Vector3d const &) const override { return true; }
 
 private:
-  Utils::Vector3d m_field;
+  Utils::Vector3d m_amplitude;
   double frequency;
 };
 

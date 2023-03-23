@@ -160,12 +160,12 @@ if (p.dip_rotates_along()) {
   p.quat() += time_step * (Qd + time_step_half * Qdd) - lambda * p.quat();
   p.dip_quat() = (p.quat()*inverse_quat*p.dip_quat()).normalized();//time_step * (Qd + time_step_half * Qdd) - lambda * p.quat();
   }
-else{
+else
+#endif
+  {
   p.quat() += time_step * (Qd + time_step_half * Qdd) - lambda * p.quat();
   }
-#else
-  p.quat() += time_step * (Qd + time_step_half * Qdd) - lambda * p.quat();
-#endif
+
 
   /* and rescale quaternion, so it is exactly of unit length */
   auto const scale = p.quat().norm();

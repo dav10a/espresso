@@ -151,6 +151,8 @@ struct ParticleProperties {
 #ifdef DIPOLES
   /** dipole moment (absolute value) */
   double dipm = 0.;
+  Utils::Quaternion<double> dip_quat =Utils::Quaternion<double>::identity();
+  bool dip_rotates_along = true;  
 #endif
 
 #ifdef VIRTUAL_SITES_RELATIVE
@@ -230,6 +232,8 @@ struct ParticleProperties {
 #endif
 #ifdef DIPOLES
     ar &dipm;
+    ar &dip_quat;
+    ar &dip_rotates_along;
 #endif
 
 #ifdef VIRTUAL_SITES
@@ -501,7 +505,11 @@ public:
 #ifdef DIPOLES
   auto const &dipm() const { return p.dipm; }
   auto &dipm() { return p.dipm; }
-  auto calc_dip() const { return calc_director() * dipm(); }
+  auto calc_dip() const { return Utils::convert_quaternion_to_director(p.dip_quat).normalize() * dipm(); }
+  auto const &dip_quat() const { return p.dip_quat; }
+  auto &dip_quat() { return p.dip_quat; }
+  bool dip_rotates_along() const { return p.dip_rotates_along; }
+  void set_dip_rotates_along(bool const rotates) { p.dip_rotates_along = rotates; }
 #endif
 #ifdef ROTATIONAL_INERTIA
   auto const &rinertia() const { return p.rinertia; }

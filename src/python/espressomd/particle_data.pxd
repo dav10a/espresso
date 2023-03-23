@@ -64,6 +64,8 @@ cdef extern from "Particle.hpp":
         Quaternion[double] quat()
         double dipm()
         bint is_virtual()
+        Quaternion[double] dip_quat()
+        bint dip_rotates_along()
         Vector3d ext_force()
         Vector3d ext_torque()
         vector[int] exclusions_as_vector() except +
@@ -108,6 +110,8 @@ cdef extern from "particle_data.hpp":
     IF DIPOLES:
         void set_particle_dip(int part, const Vector3d & dip)
         void set_particle_dipm(int part, double dipm)
+        void set_particle_dip_quat(int part, const Quaternion[double] & dip_quat)
+        void set_particle_dip_rotates_along(int part, int rotates)
 
     IF VIRTUAL_SITES:
         void set_particle_virtual(int part, int isVirtual)

@@ -168,6 +168,17 @@ void set_particle_dip(int part, Utils::Vector3d const &dip);
  *  @param dipm its new dipole moment.
  */
 void set_particle_dipm(int part, double dipm);
+
+/** Call only on the head node: set particle dipole orientation.
+ *  @param part the particle.
+ *  @param dip_quat new dipole orientation.
+ */
+void set_particle_dip_quat(int part, Utils::Quaternion<double> const &dip_quat);
+/** Call only on the head node: set particle dipole orientation.
+ *  @param part the particle.
+ *  @param dip_rotates_along 
+ */
+void set_particle_dip_rotates_along(int part, bool rotates);
 #endif
 
 #ifdef VIRTUAL_SITES

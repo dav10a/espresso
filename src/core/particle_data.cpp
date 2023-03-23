@@ -111,6 +111,8 @@ using UpdatePropertyMessage = boost::variant
 #endif
 #ifdef DIPOLES
         , UpdateProperty<double, &Prop::dipm>
+        , UpdateProperty<Utils::Quaternion<double>, &Prop::dip_quat>
+        , UpdateProperty<bool, &Prop::dip_rotates_along>
 #endif
 #ifdef VIRTUAL_SITES
         , UpdateProperty<bool, &Prop::is_virtual>
@@ -471,7 +473,17 @@ void set_particle_dip(int part, Utils::Vector3d const &dip) {
   std::tie(quat, dipm) = convert_dip_to_quat(dip);
 
   set_particle_dipm(part, dipm);
-  set_particle_quat(part, quat);
+  set_particle_dip_quat(part, quat);
+}
+
+void set_particle_dip_quat(int part, Utils::Quaternion<double> const &dip_quat) {
+mpi_update_particle_property<Utils::Quaternion<double>, &ParticleProperties::dip_quat>(
+      part, dip_quat);
+}
+
+void set_particle_dip_rotates_along(int part, bool rotates) {
+  mpi_update_particle_property<bool, &ParticleProperties::dip_rotates_along>(
+      part, rotates);
 }
 #endif
 

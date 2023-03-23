@@ -148,7 +148,24 @@ void propagate_omega_quat_particle(Particle &p, double time_step) {
   auto const lambda = 1 - S[0] * 0.5 * time_step_squared - sqrt(square);
 
   p.omega() += time_step_half * Wd;
+
+#ifdef DIPOLES
+if (p.dip_rotates_along()) {
+  Utils::Quaternion<double> inverse_quat;
+  inverse_quat[0] = p.quat()[0];
+  inverse_quat[1] = -1.0*p.quat()[1];
+  inverse_quat[2] =-1.0* p.quat()[2];
+  inverse_quat[3] = -1.0*p.quat()[3];
+
   p.quat() += time_step * (Qd + time_step_half * Qdd) - lambda * p.quat();
+  p.dip_quat() = (p.quat()*inverse_quat*p.dip_quat()).normalized();//time_step * (Qd + time_step_half * Qdd) - lambda * p.quat();
+  }
+else{
+  p.quat() += time_step * (Qd + time_step_half * Qdd) - lambda * p.quat();
+  }
+#else
+  p.quat() += time_step * (Qd + time_step_half * Qdd) - lambda * p.quat();
+#endif
 
   /* and rescale quaternion, so it is exactly of unit length */
   auto const scale = p.quat().norm();

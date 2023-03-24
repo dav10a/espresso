@@ -33,6 +33,7 @@
 #include "comfixed_global.hpp"
 #include "communication.hpp"
 #include "constraints.hpp"
+#include "magnetic_constraints.hpp"
 #include "electrostatics/icc.hpp"
 #include "electrostatics/p3m_gpu.hpp"
 #include "forcecap.hpp"
@@ -125,6 +126,7 @@ static void init_forces(const ParticleRange &particles,
   */
   for (auto &p : particles) {
     p.f = init_real_particle_force(p, time_step, kT);
+    p.dm = DipoleMotion();
   }
 
   /* initialize ghost forces with zero
@@ -203,6 +205,7 @@ void force_calc(CellStructure &cell_structure, double time_step, double kT) {
                         dipole_cutoff, collision_detection_cutoff()});
 
   Constraints::constraints.add_forces(particles, get_sim_time());
+  MagneticConstraints::magnetic_constraints.add_forces(particles, get_sim_time());
 
   if (max_oif_objects) {
     // There are two global quantities that need to be evaluated:

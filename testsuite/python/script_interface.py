@@ -21,6 +21,7 @@ import unittest as ut
 
 import espressomd.shapes
 import espressomd.constraints
+import espressomd.magnetic_constraints
 import espressomd.interactions
 
 

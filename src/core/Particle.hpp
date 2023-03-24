@@ -336,6 +336,36 @@ struct ParticleForce {
 #endif
   }
 };
+#ifdef DIPOLES
+  struct DipoleMotion {
+    DipoleMotion() = default;
+    DipoleMotion(DipoleMotion const &) = default;
+    DipoleMotion &operator=(DipoleMotion const &) = default;
+    DipoleMotion(const Utils::Vector3d &dm) : dm(dm) {}
+
+
+    friend DipoleMotion operator+(DipoleMotion const &lhs,
+                                  DipoleMotion const &rhs) {
+
+      return lhs.dm + rhs.dm;
+
+    }
+
+    DipoleMotion &operator+=(DipoleMotion const &rhs) {
+      return *this = *this + rhs;
+    }
+
+    /** force. */
+    Utils::Vector3d dm = {0., 0., 0.};
+
+
+
+    template <class Archive> void serialize(Archive &ar, long int /* version */) {
+      ar &dm;
+
+    }
+  };
+#endif
 
 /** Momentum information on a particle. Information not contained in
  *  communication of ghost particles so far, but a communication would
@@ -415,6 +445,8 @@ struct Particle { // NOLINT(bugprone-exception-escape)
   ParticleForce f;
   ///
   ParticleLocal l;
+  ///
+  DipoleMotion dm;
 
 private:
 #ifdef BOND_CONSTRAINT
@@ -510,6 +542,8 @@ public:
   auto &dip_quat() { return p.dip_quat; }
   bool dip_rotates_along() const { return p.dip_rotates_along; }
   void set_dip_rotates_along(bool const rotates) { p.dip_rotates_along = rotates; }
+  auto const &dipole_boost() const { return dm.dm; }
+  auto &dipole_boost() { return dm.dm; }
 #endif
 #ifdef ROTATIONAL_INERTIA
   auto const &rinertia() const { return p.rinertia; }
@@ -609,6 +643,7 @@ BOOST_CLASS_IMPLEMENTATION(ParticleProperties, object_serializable)
 BOOST_CLASS_IMPLEMENTATION(ParticlePosition, object_serializable)
 BOOST_CLASS_IMPLEMENTATION(ParticleMomentum, object_serializable)
 BOOST_CLASS_IMPLEMENTATION(ParticleForce, object_serializable)
+BOOST_CLASS_IMPLEMENTATION(DipoleMotion, object_serializable)
 BOOST_CLASS_IMPLEMENTATION(ParticleLocal, object_serializable)
 #ifdef BOND_CONSTRAINT
 BOOST_CLASS_IMPLEMENTATION(ParticleRattle, object_serializable)
@@ -623,6 +658,7 @@ BOOST_IS_BITWISE_SERIALIZABLE(ParticleProperties)
 BOOST_IS_BITWISE_SERIALIZABLE(ParticlePosition)
 BOOST_IS_BITWISE_SERIALIZABLE(ParticleMomentum)
 BOOST_IS_BITWISE_SERIALIZABLE(ParticleForce)
+BOOST_IS_BITWISE_SERIALIZABLE(DipoleMotion)
 BOOST_IS_BITWISE_SERIALIZABLE(ParticleLocal)
 #ifdef BOND_CONSTRAINT
 BOOST_IS_BITWISE_SERIALIZABLE(ParticleRattle)

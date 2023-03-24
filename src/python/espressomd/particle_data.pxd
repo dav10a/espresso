@@ -52,6 +52,7 @@ cdef extern from "Particle.hpp":
         Vector3d pos()
         Vector3d calc_director()
         Vector3d force()
+        Vector3d dipole_boost()
         Vector3d v()
         Vector3i image_box()
         double lees_edwards_offset()
@@ -112,6 +113,7 @@ cdef extern from "particle_data.hpp":
         void set_particle_dipm(int part, double dipm)
         void set_particle_dip_quat(int part, const Quaternion[double] & dip_quat)
         void set_particle_dip_rotates_along(int part, int rotates)
+        void set_particle_dm(int part, const Vector3d & dm)
 
     IF VIRTUAL_SITES:
         void set_particle_virtual(int part, int isVirtual)

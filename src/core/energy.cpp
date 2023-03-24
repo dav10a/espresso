@@ -26,6 +26,7 @@
 #include "Observable_stat.hpp"
 #include "communication.hpp"
 #include "constraints.hpp"
+#include "magnetic_constraints.hpp"
 #include "cuda_interface.hpp"
 #include "energy_inline.hpp"
 #include "event.hpp"
@@ -100,6 +101,7 @@ static std::shared_ptr<Observable_stat> calculate_energy_local() {
 #ifdef DIPOLES
   /* calculate k-space part of magnetostatic interaction. */
   obs_energy.dipolar[1] = Dipoles::calc_energy_long_range(local_parts);
+  MagneticConstraints::magnetic_constraints.add_energy(local_parts, get_sim_time(), obs_energy);
 #endif
 
   Constraints::constraints.add_energy(local_parts, get_sim_time(), obs_energy);

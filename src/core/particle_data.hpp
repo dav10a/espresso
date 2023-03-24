@@ -179,6 +179,11 @@ void set_particle_dip_quat(int part, Utils::Quaternion<double> const &dip_quat);
  *  @param dip_rotates_along 
  */
 void set_particle_dip_rotates_along(int part, bool rotates);
+/** Call only on the head node: set particle dipole boost.
+ *  @param part the particle.
+ *  @param dm its dipole boost.
+ */
+void set_particle_dm(int part, const Utils::Vector3d &dm);
 #endif
 
 #ifdef VIRTUAL_SITES

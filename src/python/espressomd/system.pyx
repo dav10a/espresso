@@ -30,6 +30,7 @@ from . import cuda_init
 from . import collision_detection
 from . import comfixed
 from . import constraints
+from . import magnetic_constraints
 from . import ekboundaries
 from . import galilei
 from . import interactions
@@ -156,6 +157,8 @@ cdef class System:
         comfixed
         """:class:`espressomd.comfixed.ComFixed`"""
         _active_virtual_sites_handle
+        magnetic_constraints
+        """:class:`espressomd.magnetic_constraints.MagneticConstraints`"""
 
     def __init__(self, **kwargs):
         if _system_created:
@@ -188,6 +191,8 @@ cdef class System:
                 mode="off")
         self.comfixed = comfixed.ComFixed()
         self.constraints = constraints.Constraints()
+        if has_features("DIPOLES"):
+            self.magnetic_constraints = magnetic_constraints.MagneticConstraints()
         if has_features("CUDA"):
             self.cuda_init_handle = cuda_init.CudaInitHandle()
         self.galilei = galilei.GalileiTransform()
@@ -214,7 +219,7 @@ cdef class System:
         checkpointable_properties += [
             "non_bonded_inter", "bonded_inter", "cell_system", "lees_edwards",
             "part", "actors", "analysis", "auto_update_accumulators",
-            "comfixed", "constraints", "galilei", "thermostat",
+            "comfixed", "constraints", "magnetic_constraints", "galilei", "thermostat",
             "bond_breakage", "max_oif_objects"
         ]
         if has_features("LB_BOUNDARIES") or has_features("LB_BOUNDARIES_GPU"):

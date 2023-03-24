@@ -301,6 +301,24 @@ cdef class ParticleHandle:
             self.update_particle_data()
             return make_array_locked(self.particle_data.force())
 
+    property dm:
+        """
+        The dipole boost acting on this particle.
+
+        dm : (3,) array_like of :obj:`float`
+
+       
+
+        """
+
+        def __set__(self, _dm):
+            check_type_or_throw_except(_dm, 3, float, "dm has to be floats")
+            set_particle_dm(self._id, make_Vector3d(_dm))
+
+        def __get__(self):
+            self.update_particle_data()
+            return make_array_locked(self.particle_data.dipole_boost())
+
     property bonds:
         """
         The bonds stored by this particle. Note that bonds are only stored by

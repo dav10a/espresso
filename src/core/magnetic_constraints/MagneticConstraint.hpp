@@ -42,12 +42,23 @@ public:
    * @brief Calculate the force of the constraint on a particle.
    *
    * @param[in] p The particle to calculate the force for.
-   * @param[in] dipole Dipole of the particle.
+   * @param[in] pos Position of the particle.
+   * @param[in] time The time at which the force should be calculated.
+   * @return The force on the particle.
+   */
+  virtual ParticleForce
+  force(const Particle &p, const Utils::Vector3d &pos, double time) = 0;
+
+    /**
+   * @brief Calculate the dipole boost of the constraint on a particle.
+   *
+   * @param[in] p The particle to calculate the force for.
+   * @param[in] pos Position of the particle.
    * @param[in] time The time at which the force should be calculated.
    * @return The force on the particle.
    */
   virtual DipoleMotion
-  force(const Particle &p, const Utils::Vector3d &dipole, double time) = 0;
+  dipole_boost(const Particle &p, const Utils::Vector3d &pos, double time) = 0;
 
   /**
    * @brief Check if constraints if compatible with box size.

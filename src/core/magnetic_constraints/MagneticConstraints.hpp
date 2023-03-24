@@ -80,9 +80,28 @@ public:
 
     for (auto &p : particles) {
       auto const pos = folded_position(p.pos(), box_geo);
+      ParticleForce force{};
+      for (auto const &c : *this) {
+        force += c->force(p, pos, t);
+      }
+
+      p.f += force;
+
+
+    }
+  }
+
+  void add_dipole_boosts(ParticleRange &particles, double t) const {
+    if (m_constraints.empty())
+      return;
+
+    reset_forces();
+
+    for (auto &p : particles) {
+      auto const pos = folded_position(p.pos(), box_geo);
       DipoleMotion DM{};
       for (auto const &c : *this) {
-        DM += c->force(p, pos, t);
+        DM += c->dipole_boost(p, pos, t);
       }
 
       p.dm += DM;

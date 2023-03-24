@@ -204,6 +204,7 @@ void force_calc(CellStructure &cell_structure, double time_step, double kT) {
                         dipole_cutoff, collision_detection_cutoff()});
 
   Constraints::constraints.add_forces(particles, get_sim_time());
+  MagneticConstraints::magnetic_constraints.add_forces(particles, get_sim_time());
 
   if (max_oif_objects) {
     // There are two global quantities that need to be evaluated:
@@ -255,7 +256,7 @@ void dip_calc(CellStructure &cell_structure, double time_step, double kT) {
 
 
 
-  MagneticConstraints::magnetic_constraints.add_forces(particles, get_sim_time());
+  MagneticConstraints::magnetic_constraints.add_dipole_boosts(particles, get_sim_time());
 }
 
 

@@ -29,23 +29,25 @@ namespace MagneticConstraints {
 
 class MagnetizationDynamics : public MagneticConstraint {
 public:
-  MagnetizationDynamics() : dipole_boost({0., 0., 0.}) {}
+  MagnetizationDynamics() : dm_({0., 0., 0.}) {}
 
-  void set_dm(Utils::Vector3d const &dm) { dipole_boost = dm; }
+  void set_dm(Utils::Vector3d const &dm) { dm_ = dm; }
 
 
-  Utils::Vector3d const &dm() const { return dipole_boost; }
+  Utils::Vector3d const &dm() const { return dm_; }
 
   void add_energy(const Particle &p, const Utils::Vector3d &, double,
                   Observable_stat &energy) const override;
 
-  DipoleMotion force(const Particle &p, const Utils::Vector3d &,
+  ParticleForce force(const Particle &p, const Utils::Vector3d &,
+                      double) override;
+  DipoleMotion dipole_boost(const Particle &p, const Utils::Vector3d &,
                       double) override;
 
   bool fits_in_box(Utils::Vector3d const &) const override { return true; }
 
 private:
-  Utils::Vector3d dipole_boost;
+  Utils::Vector3d dm_;
 };
 
 } /* namespace MagneticConstraints */

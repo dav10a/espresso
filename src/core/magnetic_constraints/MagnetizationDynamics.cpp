@@ -28,10 +28,19 @@
 #include <iostream>
 namespace MagneticConstraints {
 
-DipoleMotion MagnetizationDynamics::force(const Particle &p,
+ParticleForce MagnetizationDynamics::force(const Particle &p,
                                               const Utils::Vector3d &, double t) {
 #if defined(ROTATION) && defined(DIPOLES)
-  return dipole_boost ;
+  return {{}, p.calc_dip()}; ;
+#else
+  return {};
+#endif
+}
+
+DipoleMotion MagnetizationDynamics::dipole_boost(const Particle &p,
+                                              const Utils::Vector3d &, double t) {
+#ifdef DIPOLES
+  return dm_ ;
 #else
   return {};
 #endif

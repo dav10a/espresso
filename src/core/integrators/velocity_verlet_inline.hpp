@@ -26,7 +26,6 @@
 #include "cell_system/CellStructure.hpp"
 #include "integrate.hpp"
 #include "rotation.hpp"
-
 /** Propagate the velocities and positions. Integration steps before force
  *  calculation of the Velocity Verlet integrator: <br> \f[ v(t+0.5 \Delta t) =
  *  v(t) + 0.5 \Delta t f(t)/m \f] <br> \f[ p(t+\Delta t) = p(t) + \Delta t
@@ -53,6 +52,10 @@ inline void velocity_verlet_propagate_vel_pos(const ParticleRange &particles,
         p.pos()[j] += time_step * p.v()[j];
       }
     }
+#ifdef DIPOLES 
+    /* Set: m(t+dt) = m(t) + dm(t) */        
+    std::tie(p.dip_quat(), p.dipm()) = convert_dip_to_quat(p.calc_dip() + p.dipole_boost());
+#endif 
   }
 }
 
@@ -66,9 +69,6 @@ inline void velocity_verlet_propagate_vel_final(const ParticleRange &particles,
     // Virtual sites are not propagated during integration
     if (p.is_virtual())
       continue;
-#ifdef DIPOLES         
-    std::tie(p.dip_quat(), p.dipm()) = convert_dip_to_quat(p.calc_dip() + p.dipole_boost());
-#endif
     for (int j = 0; j < 3; j++) {
       if (!p.is_fixed_along(j)) {
         /* Propagate velocity: v(t+dt) = v(t+0.5*dt) + 0.5*dt * a(t+dt) */

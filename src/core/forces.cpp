@@ -59,7 +59,6 @@
 #include <profiler/profiler.hpp>
 
 #include <cassert>
-
 /** Initialize the forces for a ghost particle */
 inline ParticleForce init_ghost_force(Particle const &) { return {}; }
 
@@ -205,7 +204,6 @@ void force_calc(CellStructure &cell_structure, double time_step, double kT) {
                         dipole_cutoff, collision_detection_cutoff()});
 
   Constraints::constraints.add_forces(particles, get_sim_time());
-  MagneticConstraints::magnetic_constraints.add_forces(particles, get_sim_time());
 
   if (max_oif_objects) {
     // There are two global quantities that need to be evaluated:
@@ -245,7 +243,23 @@ void force_calc(CellStructure &cell_structure, double time_step, double kT) {
   // mark that forces are now up-to-date
   recalc_forces = false;
 }
+void dip_calc(CellStructure &cell_structure, double time_step, double kT) {
+  ESPRESSO_PROFILER_CXX_MARK_FUNCTION;
+  auto particles = cell_structure.local_particles();
+  for (auto &p : particles) {
+    p.dm = DipoleMotion();
+  }
+  auto &espresso_system = EspressoSystemInterface::Instance();
+  espresso_system.update();
 
+
+
+
+  MagneticConstraints::magnetic_constraints.add_forces(particles, get_sim_time());
+}
+
+
+///STOP!!!
 void calc_long_range_forces(const ParticleRange &particles) {
   ESPRESSO_PROFILER_CXX_MARK_FUNCTION;
 #ifdef ELECTROSTATICS

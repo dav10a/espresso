@@ -29,7 +29,9 @@ namespace Constraints {
 
 class AlternatingMagneticField : public Constraint {
 public:
-  AlternatingMagneticField() : m_amplitude({1., 0., 0.}) {}
+  AlternatingMagneticField() 
+  : m_amplitude({0., 0., 0.}),
+    frequency(0.) {}
 
   void set_H0(Utils::Vector3d const &H0) { m_amplitude = H0; }
   void set_omega(double const &w) { frequency = w; }

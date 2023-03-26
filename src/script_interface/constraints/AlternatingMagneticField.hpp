@@ -44,12 +44,19 @@ public:
                      [this](Variant const &v) {
                        m_constraint->set_H0(get_value<Utils::Vector3d>(v));
                      },
-                     [this]() { return m_constraint->H0(); }}});
-    add_parameters({{"omega",
+                     [this]() { return m_constraint->H0(); }},
+                    {"omega",
                      [this](Variant const &v) {
                        m_constraint->set_omega(get_value<double>(v));
                      },
-                     [this]() { return m_constraint->omega(); }}});
+                     [this]() { return m_constraint->omega(); }},
+                    {"phi",
+                     [this](Variant const &v) {
+                       m_constraint->set_phase(get_value<double>(v));
+                     },
+                     [this]() { return m_constraint->phase(); }
+                    }
+                    });
   }
 
   std::shared_ptr<::Constraints::Constraint> constraint() override {

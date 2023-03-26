@@ -31,14 +31,17 @@ class AlternatingMagneticField : public Constraint {
 public:
   AlternatingMagneticField() 
   : m_amplitude({0., 0., 0.}),
-    frequency(0.) {}
+    m_omega(0.),
+    m_phase(0.) {}
 
   void set_H0(Utils::Vector3d const &H0) { m_amplitude = H0; }
-  void set_omega(double const &w) { frequency = w; }
+  void set_omega(double const &w) { m_omega = w; }
+  void set_phase(double const &w) { m_phase = w; }
 
 
   Utils::Vector3d const &H0() const { return m_amplitude; }
-  double const &omega() const { return frequency; }
+  double const &omega() const { return m_omega; }
+  double const &phase() const { return m_phase; }
 
   void add_energy(const Particle &p, const Utils::Vector3d &, double,
                   Observable_stat &energy) const override;
@@ -50,7 +53,8 @@ public:
 
 private:
   Utils::Vector3d m_amplitude;
-  double frequency;
+  double m_omega;
+  double m_phase;
 };
 
 } /* namespace Constraints */

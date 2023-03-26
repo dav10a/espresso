@@ -31,7 +31,7 @@ namespace Constraints {
 ParticleForce AlternatingMagneticField::force(const Particle &p,
                                               const Utils::Vector3d &, double t) {
 #if defined(ROTATION) && defined(DIPOLES)
-  return {{}, vector_product(p.calc_dip(), m_amplitude * sin(frequency * t)) };
+  return {{}, vector_product(p.calc_dip(), m_amplitude * sin(m_omega * t + m_phase)) };
 #else
   return {};
 #endif
@@ -41,7 +41,7 @@ void AlternatingMagneticField::add_energy(const Particle &p,
                                           const Utils::Vector3d &, double t,
                                           Observable_stat &obs_energy) const {
 #ifdef DIPOLES
-  obs_energy.dipolar[0] += -1.0 * m_amplitude * sin(frequency * t) * p.calc_dip();
+  obs_energy.dipolar[0] += -1.0 * m_amplitude * sin(m_omega * t + m_phase) * p.calc_dip();
 #endif
 }
 

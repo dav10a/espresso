@@ -204,6 +204,8 @@ class AlternatingMagneticField(Constraint):
         Magnetic field amplitude.
     omega : :obj:`float`
         Frequency.
+    phi : :obj:`float`, optional
+        Phase shift
     """
 
     _so_name = "Constraints::AlternatingMagneticField"

@@ -84,8 +84,8 @@ template <typename T, T ParticleMomentum ::*m>
 using UpdateMomentum = UpdateParticle<ParticleMomentum, &Particle::m, T, m>;
 template <typename T, T ParticleForce ::*m>
 using UpdateForce = UpdateParticle<ParticleForce, &Particle::f, T, m>;
-template <typename T, T DipoleMotion ::*m>
-using UpdateDipole = UpdateParticle<DipoleMotion, &Particle::dm, T, m>;
+template <typename T, T DipoleBoost ::*m>
+using UpdateDipole = UpdateParticle<DipoleBoost, &Particle::dm, T, m>;
 
 using Prop = ParticleProperties;
 
@@ -115,7 +115,7 @@ using UpdatePropertyMessage = boost::variant
         , UpdateProperty<double, &Prop::dipm>
         , UpdateProperty<Utils::Quaternion<double>, &Prop::dip_quat>
         , UpdateProperty<bool, &Prop::dip_rotates_along>
-        , UpdateDipole<Utils::Vector3d, &DipoleMotion::dm>
+        , UpdateDipole<Utils::Vector3d, &DipoleBoost::dm>
 #endif
 #ifdef VIRTUAL_SITES
         , UpdateProperty<bool, &Prop::is_virtual>
@@ -308,7 +308,7 @@ template <> struct message_type<ParticleForce, &Particle::f> {
   using type = UpdateForceMessage;
 };
 
-template <> struct message_type<DipoleMotion, &Particle::dm> {
+template <> struct message_type<DipoleBoost, &Particle::dm> {
   using type = UpdatePropertyMessage;
 };
 
@@ -522,8 +522,8 @@ void set_particle_dip_rotates_along(int part, bool rotates) {
 }
 
 void set_particle_dm(int part, const Utils::Vector3d &dm) {
-  mpi_update_particle_without_recalc<DipoleMotion, &Particle::dm, Utils::Vector3d,
-                      &DipoleMotion::dm>(part, dm);
+  mpi_update_particle_without_recalc<DipoleBoost, &Particle::dm, Utils::Vector3d,
+                      &DipoleBoost::dm>(part, dm);
 }
 #endif
 

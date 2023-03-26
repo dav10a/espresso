@@ -337,21 +337,21 @@ struct ParticleForce {
   }
 };
 #ifdef DIPOLES
-  struct DipoleMotion {
-    DipoleMotion() = default;
-    DipoleMotion(DipoleMotion const &) = default;
-    DipoleMotion &operator=(DipoleMotion const &) = default;
-    DipoleMotion(const Utils::Vector3d &dm) : dm(dm) {}
+  struct DipoleBoost {
+    DipoleBoost() = default;
+    DipoleBoost(DipoleBoost const &) = default;
+    DipoleBoost &operator=(DipoleBoost const &) = default;
+    DipoleBoost(const Utils::Vector3d &dm) : dm(dm) {}
 
 
-    friend DipoleMotion operator+(DipoleMotion const &lhs,
-                                  DipoleMotion const &rhs) {
+    friend DipoleBoost operator+(DipoleBoost const &lhs,
+                                  DipoleBoost const &rhs) {
 
       return lhs.dm + rhs.dm;
 
     }
 
-    DipoleMotion &operator+=(DipoleMotion const &rhs) {
+    DipoleBoost &operator+=(DipoleBoost const &rhs) {
       return *this = *this + rhs;
     }
 
@@ -446,7 +446,7 @@ struct Particle { // NOLINT(bugprone-exception-escape)
   ///
   ParticleLocal l;
   ///
-  DipoleMotion dm;
+  DipoleBoost dm;
 
 private:
 #ifdef BOND_CONSTRAINT
@@ -643,7 +643,7 @@ BOOST_CLASS_IMPLEMENTATION(ParticleProperties, object_serializable)
 BOOST_CLASS_IMPLEMENTATION(ParticlePosition, object_serializable)
 BOOST_CLASS_IMPLEMENTATION(ParticleMomentum, object_serializable)
 BOOST_CLASS_IMPLEMENTATION(ParticleForce, object_serializable)
-BOOST_CLASS_IMPLEMENTATION(DipoleMotion, object_serializable)
+BOOST_CLASS_IMPLEMENTATION(DipoleBoost, object_serializable)
 BOOST_CLASS_IMPLEMENTATION(ParticleLocal, object_serializable)
 #ifdef BOND_CONSTRAINT
 BOOST_CLASS_IMPLEMENTATION(ParticleRattle, object_serializable)
@@ -658,7 +658,7 @@ BOOST_IS_BITWISE_SERIALIZABLE(ParticleProperties)
 BOOST_IS_BITWISE_SERIALIZABLE(ParticlePosition)
 BOOST_IS_BITWISE_SERIALIZABLE(ParticleMomentum)
 BOOST_IS_BITWISE_SERIALIZABLE(ParticleForce)
-BOOST_IS_BITWISE_SERIALIZABLE(DipoleMotion)
+BOOST_IS_BITWISE_SERIALIZABLE(DipoleBoost)
 BOOST_IS_BITWISE_SERIALIZABLE(ParticleLocal)
 #ifdef BOND_CONSTRAINT
 BOOST_IS_BITWISE_SERIALIZABLE(ParticleRattle)

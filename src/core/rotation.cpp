@@ -150,20 +150,20 @@ void propagate_omega_quat_particle(Particle &p, double time_step) {
   p.omega() += time_step_half * Wd;
 
 #ifdef DIPOLES
-if (p.dip_rotates_along()) {
-  Utils::Quaternion<double> inverse_quat;
-  inverse_quat[0] = p.quat()[0];
-  inverse_quat[1] = -1.0*p.quat()[1];
-  inverse_quat[2] =-1.0* p.quat()[2];
-  inverse_quat[3] = -1.0*p.quat()[3];
+  if (p.dip_rotates_along()) {
+    Utils::Quaternion<double> inverse_quat;
+    inverse_quat[0] = p.quat()[0];
+    inverse_quat[1] = -1.0*p.quat()[1];
+    inverse_quat[2] =-1.0* p.quat()[2];
+    inverse_quat[3] = -1.0*p.quat()[3];
 
-  p.quat() += time_step * (Qd + time_step_half * Qdd) - lambda * p.quat();
-  p.dip_quat() = (p.quat()*inverse_quat*p.dip_quat()).normalized();//time_step * (Qd + time_step_half * Qdd) - lambda * p.quat();
-  }
-else
+    p.quat() += time_step * (Qd + time_step_half * Qdd) - lambda * p.quat();
+    p.dip_quat() = (p.quat()*inverse_quat*p.dip_quat()).normalized();//time_step * (Qd + time_step_half * Qdd) - lambda * p.quat();
+  } else
 #endif
   {
-  p.quat() += time_step * (Qd + time_step_half * Qdd) - lambda * p.quat();
+    std::tie(p.dip_quat(), p.dipm()) = convert_dip_to_quat(p.calc_dip() + p.dipole_boost());
+    p.quat() += time_step * (Qd + time_step_half * Qdd) - lambda * p.quat();
   }
 
 

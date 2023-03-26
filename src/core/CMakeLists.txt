@@ -37,7 +37,6 @@ set(Espresso_core_SRC
     ghosts.cpp
     grid.cpp
     immersed_boundaries.cpp
-    magnetic_constraints.cpp
     interactions.cpp
     event.cpp
     integrate.cpp
@@ -113,7 +112,6 @@ add_subdirectory(bonded_interactions)
 add_subdirectory(cell_system)
 add_subdirectory(cluster_analysis)
 add_subdirectory(constraints)
-add_subdirectory(magnetic_constraints)
 add_subdirectory(electrostatics)
 add_subdirectory(error_handling)
 add_subdirectory(grid_based_algorithms)

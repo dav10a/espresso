@@ -112,7 +112,7 @@ cdef extern from "particle_data.hpp":
         void set_particle_dip(int part, const Vector3d & dip)
         void set_particle_dipm(int part, double dipm)
         void set_particle_dip_quat(int part, const Quaternion[double] & dip_quat)
-        void set_particle_dip_rotates_along(int part, int rotates)
+        void set_particle_dip_rotates_along(int part, bint rotates)
         void set_particle_dm(int part, const Vector3d & dm)
 
     IF VIRTUAL_SITES:

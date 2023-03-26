@@ -169,16 +169,18 @@ void set_particle_dip(int part, Utils::Vector3d const &dip);
  */
 void set_particle_dipm(int part, double dipm);
 
-/** Call only on the head node: set particle dipole orientation.
+/** Call only on the head node: set particle dipole quaternion.
  *  @param part the particle.
- *  @param dip_quat new dipole orientation.
+ *  @param dip_quat new dipole  quaternion.
  */
 void set_particle_dip_quat(int part, Utils::Quaternion<double> const &dip_quat);
-/** Call only on the head node: set particle dipole orientation.
+
+/** Call only on the head node: set whether the dipole rotates along with the particle.
  *  @param part the particle.
  *  @param dip_rotates_along 
  */
 void set_particle_dip_rotates_along(int part, bool rotates);
+
 /** Call only on the head node: set particle dipole boost.
  *  @param part the particle.
  *  @param dm its dipole boost.

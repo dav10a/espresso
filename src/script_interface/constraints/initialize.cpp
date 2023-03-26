@@ -22,7 +22,6 @@
 
 #include "HomogeneousMagneticField.hpp"
 #include "AlternatingMagneticField.hpp"
-
 #include "ShapeBasedConstraint.hpp"
 
 #include "ExternalField.hpp"

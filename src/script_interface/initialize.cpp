@@ -23,7 +23,6 @@
 
 #include "cluster_analysis/initialize.hpp"
 #include "constraints/initialize.hpp"
-#include "magnetic_constraints/initialize.hpp"
 #include "pair_criteria/initialize.hpp"
 #include "shapes/initialize.hpp"
 #ifdef H5MD
@@ -49,7 +48,6 @@ namespace ScriptInterface {
 void initialize(Utils::Factory<ObjectHandle> *f) {
   Shapes::initialize(f);
   Constraints::initialize(f);
-  MagneticConstraints::initialize(f);
 #ifdef H5MD
   Writer::initialize(f);
 #endif

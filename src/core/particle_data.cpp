@@ -307,9 +307,11 @@ template <> struct message_type<ParticleMomentum, &Particle::m> {
 template <> struct message_type<ParticleForce, &Particle::f> {
   using type = UpdateForceMessage;
 };
+
 template <> struct message_type<DipoleMotion, &Particle::dm> {
   using type = UpdatePropertyMessage;
 };
+
 template <typename S, S Particle::*s>
 using message_type_t = typename message_type<S, s>::type;
 
@@ -419,16 +421,19 @@ void mpi_update_particle(int id, const T &value) {
   MessageType msg = UpdateParticle<S, s, T, m>{value};
   mpi_send_update_message(id, msg);
 }
+
 template <typename S, S Particle::*s, typename T, T S::*m>
 void mpi_update_particle_without_recalc(int id, const T &value) {
   using MessageType = message_type_t<S, s>;
   MessageType msg = UpdateParticle<S, s, T, m>{value};
   mpi_send_update_message_without_recalc(id, msg);
 }
+
 template <typename T, T ParticleProperties::*m>
 void mpi_update_particle_property(int id, const T &value) {
   mpi_update_particle<ParticleProperties, &Particle::p, T, m>(id, value);
 }
+
 template <typename T, T ParticleProperties::*m>
 void mpi_update_particle_property_without_recalc(int id, const T &value) {
   mpi_update_particle_without_recalc<ParticleProperties, &Particle::p, T, m>(id, value);
@@ -507,7 +512,7 @@ void set_particle_dip(int part, Utils::Vector3d const &dip) {
 }
 
 void set_particle_dip_quat(int part, Utils::Quaternion<double> const &dip_quat) {
-mpi_update_particle_property<Utils::Quaternion<double>, &ParticleProperties::dip_quat>(
+  mpi_update_particle_property<Utils::Quaternion<double>, &ParticleProperties::dip_quat>(
       part, dip_quat);
 }
 

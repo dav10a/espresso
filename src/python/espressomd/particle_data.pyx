@@ -305,14 +305,12 @@ cdef class ParticleHandle:
         """
         The dipole boost acting on this particle.
 
-        dm : (3,) array_like of :obj:`float`
-
-       
+        dm : (3,) array_like of :obj:`float`       
 
         """
 
         def __set__(self, _dm):
-            check_type_or_throw_except(_dm, 3, float, "dm has to be floats")
+            check_type_or_throw_except(_dm, 3, float, "Dipole boost has to be floats")
             set_particle_dm(self._id, make_Vector3d(_dm))
 
         def __get__(self):
@@ -801,7 +799,7 @@ cdef class ParticleHandle:
             def __set__(self, _q):
                 cdef Quaternion[double] q
                 check_type_or_throw_except(
-                    _q, 4, float, "Quaternions has to be 4 floats.")
+                    _q, 4, float, "Quaternion has to be 4 floats.")
                 if np.linalg.norm(_q) == 0.:
                     raise ValueError("quaternion is zero")
                 for i in range(4):

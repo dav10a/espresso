@@ -397,13 +397,34 @@ static void mpi_send_update_message(int id, const UpdateMessage &msg) {
   on_particle_change();
 }
 
+static void mpi_send_update_message_without_recalc(int id, const UpdateMessage &msg) {
+  auto const pnode = get_particle_node(id);
+
+  mpi_call(mpi_send_update_message_local, pnode, id);
+
+  /* If the particle is remote, send the
+   * message to the target, otherwise we
+   * can just apply the update directly. */
+  if (pnode != comm_cart.rank()) {
+    comm_cart.send(pnode, some_tag, msg);
+  } else {
+    boost::apply_visitor(UpdateVisitor{id}, msg);
+  }
+
+}
+
 template <typename S, S Particle::*s, typename T, T S::*m>
 void mpi_update_particle(int id, const T &value) {
   using MessageType = message_type_t<S, s>;
   MessageType msg = UpdateParticle<S, s, T, m>{value};
   mpi_send_update_message(id, msg);
 }
-
+template <typename S, S Particle::*s, typename T, T S::*m>
+void mpi_update_particle_without_recalc(int id, const T &value) {
+  using MessageType = message_type_t<S, s>;
+  MessageType msg = UpdateParticle<S, s, T, m>{value};
+  mpi_send_update_message_without_recalc(id, msg);
+}
 template <typename T, T ParticleProperties::*m>
 void mpi_update_particle_property(int id, const T &value) {
   mpi_update_particle<ParticleProperties, &Particle::p, T, m>(id, value);
@@ -492,7 +513,7 @@ void set_particle_dip_rotates_along(int part, bool rotates) {
 }
 
 void set_particle_dm(int part, const Utils::Vector3d &dm) {
-  mpi_update_particle<DipoleMotion, &Particle::dm, Utils::Vector3d,
+  mpi_update_particle_without_recalc<DipoleMotion, &Particle::dm, Utils::Vector3d,
                       &DipoleMotion::dm>(part, dm);
 }
 #endif

@@ -305,9 +305,6 @@ int integrate(int n_steps, int reuse_forces) {
     if (n_rigidbonds)
       save_old_position(particles, cell_structure.ghost_particles());
 #endif
-#ifdef DIPOLES
-    dip_calc(cell_structure, time_step, temperature);
-#endif
     LeesEdwards::update_box_params();
     bool early_exit = integrator_step_1(particles);
     if (early_exit)

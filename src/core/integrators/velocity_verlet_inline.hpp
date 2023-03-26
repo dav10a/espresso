@@ -52,9 +52,11 @@ inline void velocity_verlet_propagate_vel_pos(const ParticleRange &particles,
         p.pos()[j] += time_step * p.v()[j];
       }
     }
-#ifdef DIPOLES 
+#ifdef DIPOLES
+    if (!p.dip_rotates_along()){
     /* Set: m(t+dt) = m(t) + dm(t) */        
     std::tie(p.dip_quat(), p.dipm()) = convert_dip_to_quat(p.calc_dip() + p.dipole_boost());
+    }
 #endif 
   }
 }

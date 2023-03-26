@@ -429,6 +429,10 @@ template <typename T, T ParticleProperties::*m>
 void mpi_update_particle_property(int id, const T &value) {
   mpi_update_particle<ParticleProperties, &Particle::p, T, m>(id, value);
 }
+template <typename T, T ParticleProperties::*m>
+void mpi_update_particle_property_without_recalc(int id, const T &value) {
+  mpi_update_particle_without_recalc<ParticleProperties, &Particle::p, T, m>(id, value);
+}
 
 void set_particle_v(int part, Utils::Vector3d const &v) {
   mpi_update_particle<ParticleMomentum, &Particle::m, Utils::Vector3d,
@@ -640,7 +644,7 @@ void set_particle_gamma_rot(int part, Utils::Vector3d const &gamma_rot) {
 #ifdef EXTERNAL_FORCES
 #ifdef ROTATION
 void set_particle_ext_torque(int part, const Utils::Vector3d &torque) {
-  mpi_update_particle_property<Utils::Vector3d,
+  mpi_update_particle_property_without_recalc<Utils::Vector3d,
                                &ParticleProperties::ext_torque>(part, torque);
 }
 #endif // ROTATION

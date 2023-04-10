@@ -157,4 +157,8 @@ void ShapeBasedConstraint::add_energy(const Particle &p,
   if (part_rep.type() >= 0)
     obs_energy.add_non_bonded_contribution(p.type(), part_rep.type(), energy);
 }
+
+void ShapeBasedConstraint::add_magnetic_losses(const Particle &,
+                                               const Utils::Vector3d &, double,
+                                               Observable_stat &) const {}
 } // namespace Constraints

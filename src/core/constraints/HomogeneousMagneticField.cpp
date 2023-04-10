@@ -43,4 +43,9 @@ void HomogeneousMagneticField::add_energy(const Particle &p,
 #endif
 }
 
+void HomogeneousMagneticField::add_magnetic_losses(const Particle &,
+                                                   const Utils::Vector3d &,
+                                                   double,
+                                                   Observable_stat &) const {}
+
 } // namespace Constraints

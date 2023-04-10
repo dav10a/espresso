@@ -29,6 +29,7 @@ set(Espresso_core_SRC
     constraints.cpp
     dpd.cpp
     energy.cpp
+    magnetic_losses.cpp
     errorhandling.cpp
     EspressoSystemInterface.cpp
     forcecap.cpp

@@ -101,6 +101,17 @@ public:
     }
   }
 
+  void add_magnetic_losses(const ParticleRange &particles, double time,
+                           Observable_stat &obs_losses) const {
+    for (auto &p : particles) {
+      auto const pos = folded_position(p.pos(), box_geo);
+
+      for (auto const &constraint : *this) {
+        constraint->add_magnetic_losses(p, pos, time, obs_losses);
+      }
+    }
+  }
+
   void on_boxl_change() const {
     if (not this->empty()) {
       throw std::runtime_error("The box size can not be changed because there "

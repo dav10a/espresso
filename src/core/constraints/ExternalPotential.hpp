@@ -32,7 +32,7 @@ class ExternalPotential : public Constraint {
 
 public:
   template <typename... Args>
-  ExternalPotential(Args &&... args) : impl(std::forward<Args>(args)...) {}
+  ExternalPotential(Args &&...args) : impl(std::forward<Args>(args)...) {}
 
   const Coupling &coupling() const { return impl.coupling(); }
   const Field &field() const { return impl.field(); }
@@ -41,6 +41,9 @@ public:
                   double time, Observable_stat &obs_energy) const override {
     obs_energy.external_fields[0] += impl.energy(p, folded_pos, time);
   }
+
+  void add_magnetic_losses(const Particle &, const Utils::Vector3d &, double,
+                           Observable_stat &) const override {}
 
   ParticleForce force(const Particle &p, const Utils::Vector3d &folded_pos,
                       double time) override {

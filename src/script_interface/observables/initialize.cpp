@@ -116,6 +116,7 @@ void initialize(Utils::Factory<ObjectHandle> *om) {
   //    register_new("Observables::ParticleVelocities");
 
   REGISTER(Energy);
+  REGISTER(MagneticLosses);
   REGISTER(Pressure);
   REGISTER(PressureTensor);
   REGISTER_PID_OBS(ParticlePositions);

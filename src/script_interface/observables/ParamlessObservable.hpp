@@ -31,6 +31,8 @@
 #include "core/observables/DPDStress.hpp"
 #endif
 #include "core/observables/EnergyObservable.hpp"
+#include "core/observables/MagneticLossesObservable.hpp"
+
 #include "core/observables/LBFluidPressureTensor.hpp"
 #include "core/observables/Observable.hpp"
 #include "core/observables/PressureObservable.hpp"
@@ -63,6 +65,7 @@ private:
   using name = ParamlessObservableInterface<::Observables::name>; // NOLINT(bugprone-macro-parentheses)
 // clang-format on
 NEW_PARAMLESS_OBSERVABLE(Energy)
+NEW_PARAMLESS_OBSERVABLE(MagneticLosses)
 NEW_PARAMLESS_OBSERVABLE(Pressure)
 NEW_PARAMLESS_OBSERVABLE(PressureTensor)
 NEW_PARAMLESS_OBSERVABLE(LBFluidPressureTensor)

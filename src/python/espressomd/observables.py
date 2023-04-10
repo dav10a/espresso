@@ -605,6 +605,22 @@ class Energy(Observable):
 
 
 @script_interface_register
+class MagneticLosses(Observable):
+
+    """Calculates the dissipated energy per time unit with regard to 
+    dipoles exposed to an alternating magnetic field. This should also give correct
+    results for non-zero temperatures.
+    .
+
+    Returns
+    -------
+    :obj:`float`
+
+    """   
+    _so_name = "Observables::MagneticLosses"
+
+
+@script_interface_register
 class Pressure(Observable):
 
     """Calculates the total scalar pressure.

@@ -38,6 +38,9 @@ public:
   virtual void add_energy(const Particle &p, const Utils::Vector3d &folded_pos,
                           double time, Observable_stat &energy) const = 0;
 
+
+ virtual void add_magnetic_losses(const Particle &p, const Utils::Vector3d &folded_pos,
+                          double time, Observable_stat &losses) const = 0;
   /**
    * @brief Calculate the force of the constraint on a particle.
    *

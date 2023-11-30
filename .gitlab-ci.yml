@@ -47,9 +47,6 @@ style:
     - git submodule deinit .
   script:
     - sh maintainer/CI/fix_style.sh
-  tags:
-    - espresso
-    - no-cuda
   variables:
     GIT_SUBMODULE_STRATEGY: none
   artifacts:
@@ -68,9 +65,6 @@ style_doxygen:
     - cp ../maintainer/configs/maxset.hpp myconfig.hpp
     - cmake .. -DWITH_CUDA=ON -DWITH_SCAFACOS=ON
     - sh ../maintainer/CI/dox_warnings.sh
-  tags:
-    - espresso
-    - no-cuda
 
 ### Builds without CUDA
 
@@ -88,9 +82,7 @@ default:
      check_skip_long: 'true'
   script:
     - bash maintainer/CI/build_cmake.sh
-  tags:
-    - espresso
-    - no-cuda
+  
 
 maxset:
   <<: *global_job_definition
@@ -108,10 +100,7 @@ maxset:
      cmake_params: '-DTEST_NP=8'
   script:
     - bash maintainer/CI/build_cmake.sh
-  tags:
-    - espresso
-    - no-cuda
-    - numa
+  
 
 no_rotation:
   <<: *global_job_definition
@@ -126,10 +115,7 @@ no_rotation:
      check_skip_long: 'true'
   script:
     - bash maintainer/CI/build_cmake.sh
-  tags:
-    - espresso
-    - no-cuda
-    - numa
+  
 
 ubuntu:wo-dependencies:
   <<: *global_job_definition
@@ -143,9 +129,7 @@ ubuntu:wo-dependencies:
      make_check_python: 'false'
   script:
     - bash maintainer/CI/build_cmake.sh
-  tags:
-    - espresso
-    - no-cuda
+  
 
 ### Builds with different distributions
 
@@ -160,9 +144,7 @@ debian:10:
      with_stokesian_dynamics: 'true'
   script:
     - bash maintainer/CI/build_cmake.sh
-  tags:
-    - espresso
-    - no-cuda
+  
 
 fedora:36:
   <<: *global_job_definition
@@ -175,10 +157,7 @@ fedora:36:
      with_stokesian_dynamics: 'true'
   script:
     - bash maintainer/CI/build_cmake.sh
-  tags:
-    - espresso
-    - no-cuda
-
+  
 ### Builds with CUDA
 
 clang-sanitizer:
@@ -200,10 +179,7 @@ clang-sanitizer:
   script:
     - bash maintainer/CI/build_cmake.sh
   timeout: 2h
-  tags:
-    - espresso
-    - cuda
-    - numa
+  
 
 fast_math:
   <<: *global_job_definition
@@ -220,11 +196,7 @@ fast_math:
      with_fast_math: 'true'
   script:
     - bash maintainer/CI/build_cmake.sh
-  tags:
-    - espresso
-    - cuda
-  when: manual
-
+  
 cuda11-maxset-ubuntu20.04:
   <<: *global_job_definition
   stage: build
@@ -241,11 +213,7 @@ cuda11-maxset-ubuntu20.04:
      with_stokesian_dynamics: 'true'
   script:
     - bash maintainer/CI/build_cmake.sh
-  tags:
-    - espresso
-    - cuda
-    - numa
-
+  
 cuda11-maxset-ubuntu22.04:
   <<: *global_job_definition
   stage: build
@@ -262,10 +230,7 @@ cuda11-maxset-ubuntu22.04:
      with_stokesian_dynamics: 'true'
   script:
     - bash maintainer/CI/build_cmake.sh
-  tags:
-    - espresso
-    - cuda
-    - numa
+  
 
 cuda10-maxset:
   <<: *global_job_definition
@@ -287,10 +252,7 @@ cuda10-maxset:
     paths:
     - build/
     expire_in: 1 week
-  tags:
-    - espresso
-    - cuda
-    - numa
+  
 
 tutorials-samples-maxset:
   <<: *global_job_definition
@@ -311,10 +273,7 @@ tutorials-samples-maxset:
      test_timeout: '1200'
   script:
     - bash maintainer/CI/build_cmake.sh
-  tags:
-    - espresso
-    - cuda
-
+  
 tutorials-samples-default:
   <<: *global_job_definition
   stage: build
@@ -333,9 +292,7 @@ tutorials-samples-default:
      test_timeout: '1200'
   script:
     - bash maintainer/CI/build_cmake.sh
-  tags:
-    - espresso
-    - cuda
+  
   only:
     - schedules
 
@@ -358,9 +315,7 @@ tutorials-samples-empty:
      with_scafacos: 'false'
   script:
     - bash maintainer/CI/build_cmake.sh
-  tags:
-    - espresso
-    - cuda
+  
   only:
     - schedules
 
@@ -383,9 +338,7 @@ tutorials-samples-no-gpu:
      hide_gpu: 'true'
   script:
     - bash maintainer/CI/build_cmake.sh
-  tags:
-    - espresso
-    - no-cuda
+  
   only:
     - schedules
 
@@ -419,9 +372,7 @@ installation:
     - make -j ${CI_CORES} check_python_skip_long
     - make -j ${CI_CORES} check_samples
     - make -j 2 check_tutorials
-  tags:
-    - espresso
-    - cuda
+  
   when: manual
 
 empty:
@@ -438,10 +389,7 @@ empty:
      with_stokesian_dynamics: 'false'
   script:
     - bash maintainer/CI/build_cmake.sh
-  tags:
-    - espresso
-    - cuda
-    - numa
+  
 
 check_sphinx:
   <<: *global_job_definition
@@ -460,10 +408,7 @@ check_sphinx:
     paths:
     - build/doc/sphinx
     expire_in: 1 week
-  tags:
-    - espresso
-    - cuda
-    - numa
+ 
 
 run_tutorials:
   <<: *global_job_definition
@@ -484,10 +429,7 @@ run_tutorials:
     paths:
     - build/doc/tutorials
     expire_in: 1 week
-  tags:
-    - espresso
-    - cuda
-    - numa
+  
   only:
     - schedules
 
@@ -506,10 +448,7 @@ run_doxygen:
     paths:
     - build/doc/doxygen
     expire_in: 1 week
-  tags:
-    - espresso
-    - no-cuda
-    - numa
+  
 
 maxset_no_gpu:
   <<: *global_job_definition
@@ -521,10 +460,7 @@ maxset_no_gpu:
     - export CUDA_VISIBLE_DEVICES=""
     - cd ${CI_PROJECT_DIR}/build
     - make -t && make check
-  tags:
-    - espresso
-    - no-cuda
-    - numa
+  
 
 maxset_3_cores:
   <<: *global_job_definition
@@ -536,10 +472,7 @@ maxset_3_cores:
     - cd ${CI_PROJECT_DIR}/build
     - cmake -DTEST_NP=3 .
     - make -t && make check_unit_tests && make check_python_parallel_odd
-  tags:
-    - espresso
-    - cuda
-    - numa
+  
 
 status_success:
   <<: *notification_job_definition

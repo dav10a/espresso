@@ -61,6 +61,9 @@ style:
     when: on_failure
 
 style_doxygen:
+  variables:
+    PROJECT_PATH: "$CI_PROJECT_PATH"
+    RELEASE_BRANCH: "$CI_COMMIT_BRANCH"
   <<: *global_job_definition
   stage: prepare
   dependencies: []

@@ -25,9 +25,7 @@ stages:
   dependencies: []
   timeout: 40m
   interruptible: false
-  tags:
-    - espresso
-    - no-cuda
+
 
 variables:
   GIT_SUBMODULE_STRATEGY: recursive

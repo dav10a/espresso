@@ -59,6 +59,9 @@ style_doxygen:
   <<: *global_job_definition
   stage: prepare
   dependencies: []
+  variables:
+    PROJECT_PATH: "$CI_PROJECT_PATH"
+    RELEASE_BRANCH: "$CI_COMMIT_BRANCH"
   script:
     - mkdir build
     - cd build

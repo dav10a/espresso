@@ -22,6 +22,8 @@
 
 #include "HomogeneousMagneticField.hpp"
 #include "AlternatingMagneticField.hpp"
+#include "BarnettField.hpp"
+
 #include "ShapeBasedConstraint.hpp"
 
 #include "ExternalField.hpp"
@@ -59,6 +61,8 @@ void initialize(Utils::Factory<ObjectHandle> *om) {
       "Constraints::HomogeneousMagneticField");
   om->register_new<AlternatingMagneticField>(
       "Constraints::AlternatingMagneticField");
+  om->register_new<BarnettField>(
+      "Constraints::BarnettField");
   om->register_new<TabulatedForceField>("Constraints::ForceField");
   om->register_new<TabulatedPotentialField>("Constraints::PotentialField");
   om->register_new<Gravity>("Constraints::Gravity");

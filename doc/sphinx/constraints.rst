@@ -570,6 +570,7 @@ of the position.  The available fields are:
 
 * :class:`espressomd.constraints.HomogeneousMagneticField`
 * :class:`espressomd.constraints.AlternatingMagneticField`
+* :class:`espressomd.constraints.BarnettField`
 * :class:`espressomd.constraints.ElectricPlaneWave`
 * :class:`espressomd.constraints.LinearElectricPotential`
 * :class:`espressomd.constraints.HomogeneousFlowField`

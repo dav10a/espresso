@@ -210,6 +210,22 @@ class AlternatingMagneticField(Constraint):
 
     _so_name = "Constraints::AlternatingMagneticField"
 
+@script_interface_register
+class BarnettField(Constraint):
+
+    """
+    Attributes
+    ----------
+    
+    gamma_e : :obj:`float`
+        Gyromagnetic ratio of the electron.
+
+    """
+
+    _so_name = "Constraints::BarnettField"
+
+
+
 
 
 class _Interpolated(Constraint):

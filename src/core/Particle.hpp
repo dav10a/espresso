@@ -151,8 +151,8 @@ struct ParticleProperties {
 #ifdef DIPOLES
   /** dipole moment (absolute value) */
   double dipm = 0.;
-  Utils::Quaternion<double> dip_quat =Utils::Quaternion<double>::identity();
-  bool dip_rotates_along = true;  
+  Utils::Quaternion<double> dip_quat = Utils::Quaternion<double>::identity();
+  bool dip_rotates_along = true;
 #endif
 
 #ifdef VIRTUAL_SITES_RELATIVE
@@ -337,34 +337,28 @@ struct ParticleForce {
   }
 };
 #ifdef DIPOLES
-  struct DipoleBoost {
-    DipoleBoost() = default;
-    DipoleBoost(DipoleBoost const &) = default;
-    DipoleBoost &operator=(DipoleBoost const &) = default;
-    DipoleBoost(const Utils::Vector3d &dm) : dm(dm) {}
+struct DipoleBoost {
+  DipoleBoost() = default;
+  DipoleBoost(DipoleBoost const &) = default;
+  DipoleBoost &operator=(DipoleBoost const &) = default;
+  DipoleBoost(const Utils::Vector3d &dm) : dm(dm) {}
 
+  friend DipoleBoost operator+(DipoleBoost const &lhs, DipoleBoost const &rhs) {
 
-    friend DipoleBoost operator+(DipoleBoost const &lhs,
-                                  DipoleBoost const &rhs) {
+    return lhs.dm + rhs.dm;
+  }
 
-      return lhs.dm + rhs.dm;
+  DipoleBoost &operator+=(DipoleBoost const &rhs) {
+    return *this = *this + rhs;
+  }
 
-    }
+  /** force. */
+  Utils::Vector3d dm = {0., 0., 0.};
 
-    DipoleBoost &operator+=(DipoleBoost const &rhs) {
-      return *this = *this + rhs;
-    }
-
-    /** force. */
-    Utils::Vector3d dm = {0., 0., 0.};
-
-
-
-    template <class Archive> void serialize(Archive &ar, long int /* version */) {
-      ar &dm;
-
-    }
-  };
+  template <class Archive> void serialize(Archive &ar, long int /* version */) {
+    ar &dm;
+  }
+};
 #endif
 
 /** Momentum information on a particle. Information not contained in
@@ -537,11 +531,16 @@ public:
 #ifdef DIPOLES
   auto const &dipm() const { return p.dipm; }
   auto &dipm() { return p.dipm; }
-  auto calc_dip() const { return Utils::convert_quaternion_to_director(p.dip_quat).normalize() * dipm(); }
+  auto calc_dip() const {
+    return Utils::convert_quaternion_to_director(p.dip_quat).normalize() *
+           dipm();
+  }
   auto const &dip_quat() const { return p.dip_quat; }
   auto &dip_quat() { return p.dip_quat; }
   bool dip_rotates_along() const { return p.dip_rotates_along; }
-  void set_dip_rotates_along(bool const rotates) { p.dip_rotates_along = rotates; }
+  void set_dip_rotates_along(bool const rotates) {
+    p.dip_rotates_along = rotates;
+  }
   auto const &dipole_boost() const { return dm.dm; }
   auto &dipole_boost() { return dm.dm; }
 #endif

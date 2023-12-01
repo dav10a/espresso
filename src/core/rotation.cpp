@@ -125,8 +125,17 @@ static void define_Qdd(Particle const &p, Utils::Quaternion<double> &Qd,
 void propagate_omega_quat_particle(Particle &p, double time_step) {
 
   // If rotation for the particle is disabled entirely, return early.
-  if (!p.can_rotate())
+  if (!p.can_rotate() && p.dip_rotates_along()) {
     return;
+  }
+  if (!p.can_rotate()) {
+#ifdef DIPOLES
+
+    std::tie(p.dip_quat(), p.dipm()) =
+        convert_dip_to_quat(p.calc_dip() + p.dipole_boost() * time_step);
+    return;
+#endif
+  }
 
   Utils::Quaternion<double> Qd{}, Qdd{};
   Utils::Vector3d S{}, Wd{};
@@ -150,22 +159,27 @@ void propagate_omega_quat_particle(Particle &p, double time_step) {
   p.omega() += time_step_half * Wd;
 
 #ifdef DIPOLES
-  if (p.dip_rotates_along()) {
-    Utils::Quaternion<double> inverse_quat;
-    inverse_quat[0] = p.quat()[0];
-    inverse_quat[1] = -1.0*p.quat()[1];
-    inverse_quat[2] =-1.0* p.quat()[2];
-    inverse_quat[3] = -1.0*p.quat()[3];
 
-    p.quat() += time_step * (Qd + time_step_half * Qdd) - lambda * p.quat();
-    p.dip_quat() = (p.quat()*inverse_quat*p.dip_quat()).normalized();//time_step * (Qd + time_step_half * Qdd) - lambda * p.quat();
-  } else
+  Utils::Quaternion<double> inverse_quat;
+  inverse_quat[0] = p.quat()[0];
+  inverse_quat[1] = -1.0 * p.quat()[1];
+  inverse_quat[2] = -1.0 * p.quat()[2];
+  inverse_quat[3] = -1.0 * p.quat()[3];
 #endif
-  {
-    std::tie(p.dip_quat(), p.dipm()) = convert_dip_to_quat(p.calc_dip() + p.dipole_boost());
-    p.quat() += time_step * (Qd + time_step_half * Qdd) - lambda * p.quat();
+  p.quat() += time_step * (Qd + time_step_half * Qdd) - lambda * p.quat();
+
+#ifdef DIPOLES
+
+  if (p.dip_rotates_along()) {
+    p.dip_quat() = (p.quat() * inverse_quat * p.dip_quat()).normalized();
   }
 
+  else
+#endif
+  {
+    std::tie(p.dip_quat(), p.dipm()) =
+        convert_dip_to_quat(p.calc_dip() + p.dipole_boost() * time_step);
+  }
 
   /* and rescale quaternion, so it is exactly of unit length */
   auto const scale = p.quat().norm();

@@ -812,26 +812,26 @@ cdef class ParticleHandle:
                 cdef Quaternion[double] q = self.particle_data.dip_quat()
                 return array_locked([q[0], q[1], q[2], q[3]])
 
-    property dip_rotates_along:
-        """Whether the dipole should rotate along with the body.        
+        property dip_rotates_along:
+            """Whether the dipole should rotate along with the body.        
 
-        dip_rotates_along : :obj:`bool`
+            dip_rotates_along : :obj:`bool`
 
-        .. note::
-           This needs the feature ``DIPOLES``
+            .. note::
+            This needs the feature ``DIPOLES``
 
-        """
+            """
 
-        def __set__(self, _v):            
-            if is_valid_type(_v, int):
-                set_particle_dip_rotates_along(self._id, < bint > _v)
-            else:
-                raise ValueError("must be a boolean.")
+            def __set__(self, _v):            
+                if is_valid_type(_v, int):
+                    set_particle_dip_rotates_along(self._id, < bint > _v)
+                else:
+                    raise ValueError("must be a boolean.")
 
 
-        def __get__(self):
-            self.update_particle_data()
-            return self.particle_data.dip_rotates_along()
+            def __get__(self):
+                self.update_particle_data()
+                return self.particle_data.dip_rotates_along()
 
     IF EXTERNAL_FORCES:
         property ext_force:

@@ -18,7 +18,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef CORE_MAGNETIC_LOSSED_HPP
+#ifndef CORE_MAGNETIC_LOSSES_HPP
 #define CORE_MAGNETIC_LOSSES_HPP
 /** \file
  *  Energy calculation.
